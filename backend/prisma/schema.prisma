@@ -1,13 +1,92 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id              String   @id @default(uuid())
+
+  name            String
+  email           String   @unique
+  password        String
+  clothingItems   ClothingItem[]
+
+  role            UserRole @default(USER)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model ClothingItem {
+  id            String   @id @default(uuid())
+  userId        String
+  user          User @relation(fields: [userId], references: [id])
+  
+    
+  name          String
+  color         String
+
+  type          ClothingType
+  accessoryType AccessoryType?
+  style         Style
+  warmth        WarmthLevel
+  gender        Gender
+
+  imageUrl      String?
+
+  createdAt     DateTime @default(now())
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  UNISEX
+}
+
+enum ClothingType {
+  ACCESSORY // Acessório 
+  JACKET    // Jaqueta ou casaco
+  SHIRT     // Camisa 
+  TOP       // Parte de cima 
+  DRESS     // Vestido
+  PANTS     // Calça
+  SHORTS    // Shorts
+  SKIRT     // Saia
+  SOCKS     // Meias
+  SHOES     // Calçados 
+}
+
+enum AccessoryType {
+  HAT        // Boné ou chapéu
+  GLASSES    // Óculos (de sol ou de grau)
+  WATCH      // Relógio
+  BELT       // Cinto
+  BRACELET   // Pulseira
+  RING       // Anel
+  NECKLACE   // Colar
+  EARRING    // Brinco
+}
+
+enum Style {
+  CASUAL    // Casual (dia a dia)
+  FORMAL    // Formal (eventos, trabalho)
+  SPORT     // Esportivo leve
+  STREET    // Streetwear (urbano)
+  SOCIAL    // Social (mais elegante/formal)
+  FITNESS   // Academia / treino
+  BEACH     // Praia / verão
+}
+
+enum WarmthLevel {
+  LIGHT
+  MEDIUM
+  HEAVY
+}
+
+enum UserRole {
+  USER
+  STORE
 }
