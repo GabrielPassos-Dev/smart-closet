@@ -29,4 +29,10 @@ export const createClothingSchema = z
     },
   );
 
+export const deleteClothingSchema = z.object({
+  id: z.string().uuid(),
+});
+
 export type CreateClothingBody = z.infer<typeof createClothingSchema>;
+
+export type DeleteClothingParams = z.infer<typeof deleteClothingSchema>;

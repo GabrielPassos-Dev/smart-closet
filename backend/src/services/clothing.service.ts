@@ -1,6 +1,10 @@
 import { AccessoryType, Prisma } from "@prisma/client";
-import { CreateClothingBody } from "../schema/clothing.schema.js";
+import {
+  CreateClothingBody,
+  DeleteClothingParams,
+} from "../schema/clothing.schema.js";
 import prisma from "../utils/prisma.js";
+import { AppError } from "../errors/AppError.js";
 
 const clothingSelect = {
   id: true,
@@ -32,6 +36,10 @@ type ListClothingResponse = Prisma.ClothingItemGetPayload<{
 }>;
 
 type CreateClothingInput = CreateClothingBody & {
+  userId: string;
+};
+
+type DeleteClothingInput = DeleteClothingParams & {
   userId: string;
 };
 
@@ -78,4 +86,18 @@ export async function listClothingService(
   });
 
   return clothing;
+}
+
+export async function deleteClothingService(
+  data: DeleteClothingInput,
+): Promise<void> {
+  const { id, userId } = data;
+
+  const result = await prisma.clothingItem.deleteMany({
+    where: { id, userId },
+  });
+
+  if (result.count === 0) {
+    throw new AppError("NOT_FOUND", 404, "Roupa não encontrada");
+  }
 }
