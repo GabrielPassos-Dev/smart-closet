@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes.js";
+import clothesRoutes from "./routes/clothing.routes.js";
 
 const app = express();
 
@@ -17,5 +18,6 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use(authRoutes);
+app.use("/clothes", clothesRoutes);
 
 export default app;

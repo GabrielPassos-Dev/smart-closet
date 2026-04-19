@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { registerUserService } from "../services/registerUserService.js";
-import { LoginUserBody, RegisterUserBody } from "../schema/authSchema.js";
-import { loginSchema, registerSchema } from "../schema/authSchema.js";
-import { loginUserService } from "../services/loginUserService.js";
+import { registerUserService } from "../services/register.user.service.js";
+import { LoginUserBody, RegisterUserBody } from "../schema/auth.schema.js";
+import { loginSchema, registerSchema } from "../schema/auth.schema.js";
+import { loginUserService } from "../services/login.user.service.js";
 import { AppError } from "../errors/AppError.js";
 
 // Request<Params, ResponseBody, RequestBody>

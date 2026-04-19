@@ -2,7 +2,7 @@
 
 import prisma from "../utils/prisma.js";
 import argon2 from "argon2";
-import { RegisterUserBody } from "../schema/authSchema.js";
+import { RegisterUserBody } from "../schema/auth.schema.js";
 import { generateToken } from "../utils/generateToken.js";
 import { AppError } from "../errors/AppError.js";
 
