@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { AccessoryType, Prisma } from "@prisma/client";
 import { CreateClothingBody } from "../schema/clothing.schema.js";
 import prisma from "../utils/prisma.js";
 
@@ -10,8 +10,25 @@ const clothingSelect = {
   createdAt: true,
 };
 
+const listClothingSelect = {
+  id: true,
+  name: true,
+  type: true,
+  imageUrl: true,
+  createdAt: true,
+  color: true,
+  gender: true,
+  style: true,
+  warmth: true,
+  accessoryType: true,
+};
+
 type CreateClothingResponse = Prisma.ClothingItemGetPayload<{
   select: typeof clothingSelect;
+}>;
+
+type ListClothingResponse = Prisma.ClothingItemGetPayload<{
+  select: typeof listClothingSelect;
 }>;
 
 type CreateClothingInput = CreateClothingBody & {
@@ -46,6 +63,18 @@ export async function createClothingService(
       imageUrl,
     },
     select: clothingSelect,
+  });
+
+  return clothing;
+}
+
+export async function listClothingService(
+  userId: string,
+): Promise<ListClothingResponse[]> {
+  const clothing = await prisma.clothingItem.findMany({
+    where: { userId },
+    select: listClothingSelect,
+    orderBy: { createdAt: "desc" },
   });
 
   return clothing;
