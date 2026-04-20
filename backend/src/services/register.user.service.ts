@@ -1,6 +1,6 @@
 // services/authService.ts
 
-import prisma from "../utils/prisma.js";
+import prisma from "../libs/prisma.js";
 import argon2 from "argon2";
 import { RegisterUserBody } from "../schema/auth.schema.js";
 import { generateToken } from "../utils/generateToken.js";

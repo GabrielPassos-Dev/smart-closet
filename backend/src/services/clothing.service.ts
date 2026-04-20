@@ -5,7 +5,7 @@ import {
   UpdateClothingBody,
   UpdateClothingParams,
 } from "../schema/clothing.schema.js";
-import prisma from "../utils/prisma.js";
+import prisma from "../libs/prisma.js";
 import { AppError } from "../errors/AppError.js";
 
 const clothingSelect = {
