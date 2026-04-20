@@ -7,37 +7,36 @@ datasource db {
 }
 
 model User {
-  id              String   @id @default(uuid())
-
-  name            String
-  email           String   @unique
-  password        String
-  clothingItems   ClothingItem[]
-
-  role            UserRole @default(USER)
-
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  id            String         @id @default(uuid())
+  
+  name          String
+  email         String         @unique
+  password      String
+  clothingItems ClothingItem[]
+  
+  role          UserRole       @default(USER)
+  
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model ClothingItem {
-  id            String   @id @default(uuid())
+  id            String         @id @default(uuid())
   userId        String
-  user          User @relation(fields: [userId], references: [id])
+  user          User           @relation(fields: [userId], references: [id])
   
-    
   name          String
   color         String
-
+  
   type          ClothingType
   accessoryType AccessoryType?
   style         Style
   warmth        WarmthLevel
   gender        Gender
-
+  
   imageUrl      String?
 
-  createdAt     DateTime @default(now())
+  createdAt     DateTime       @default(now())
 }
 
 enum Gender {
