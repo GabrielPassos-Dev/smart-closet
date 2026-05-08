@@ -5,6 +5,12 @@ import { loginSchema, registerSchema } from "../schema/auth.schema.js";
 import { loginUserService } from "../services/login.user.service.js";
 import { AppError } from "../errors/AppError.js";
 
+const cookieOptions = {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  sameSite: "strict" as const,
+  maxAge: 7 * 24 * 60 * 60 * 1000,
+};
 // Request<Params, ResponseBody, RequestBody>
 export async function registerUser(
   req: Request<{}, {}, RegisterUserBody>,
@@ -20,9 +26,11 @@ export async function registerUser(
       });
     }
 
-    const result = await registerUserService(parsed.data);
+    const { user, token } = await registerUserService(parsed.data);
 
-    return res.status(201).json(result);
+    res.cookie("token", token, cookieOptions);
+
+    return res.status(201).json({ user: user, message: "Registro Realizado" });
   } catch (err: unknown) {
     if (err instanceof AppError) {
       return res.status(err.statusCode).json({
@@ -54,9 +62,11 @@ export async function loginUser(
       });
     }
 
-    const result = await loginUserService(parsed.data);
+    const { user, token } = await loginUserService(parsed.data);
 
-    return res.status(200).json(result);
+    res.cookie("token", token, cookieOptions);
+
+    return res.status(200).json({ user: user, message: "Login Realizado" });
   } catch (err: unknown) {
     if (err instanceof AppError) {
       return res.status(err.statusCode).json({
@@ -72,4 +82,16 @@ export async function loginUser(
       message: "Erro ao realizar login. Tente novamente em instantes.",
     });
   }
+}
+
+export async function logoutUser(req: Request, res: Response) {
+  res.clearCookie("token", {
+    httpOnly: true,
+    sameSite: "strict",
+    secure: process.env.NODE_ENV === "production",
+  }); //Manda o navegador apagar cookie.
+
+  return res.status(200).json({
+    message: "Logout realizado",
+  });
 }

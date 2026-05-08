@@ -4,6 +4,8 @@ import { AppError } from "../errors/AppError.js";
 
 type TokenPayload = {
   sub: string;
+  iat?: number;
+  exp?: number;
 };
 
 export default function authMiddleware(
@@ -11,16 +13,10 @@ export default function authMiddleware(
   res: Response,
   next: NextFunction,
 ) {
-  const authHeader: string | undefined = req.headers.authorization;
-
-  if (!authHeader) {
-    throw new AppError("UNAUTHORIZED", 401, "Token não informado");
-  }
-
-  const token: string = authHeader.split(" ")[1];
+  const token = req.cookies.token;
 
   if (!token) {
-    throw new AppError("INVALID_TOKEN", 401, "Token inválido ou expirado");
+    throw new AppError("INVALID_TOKEN", 401, "Token não informado");
   }
 
   const jwtSecret = process.env.JWT_SECRET;

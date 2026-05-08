@@ -5,6 +5,12 @@ import { generateToken } from "../utils/generateToken.js";
 import { AppError } from "../errors/AppError.js";
 
 type LoginResponse = {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    createdAt: Date;
+  };
   token: string;
 };
 
@@ -18,6 +24,7 @@ export async function loginUserService(
     name: true,
     email: true,
     password: true,
+    createdAt: true,
   };
 
   const user = await prisma.user.findUnique({
@@ -45,5 +52,13 @@ export async function loginUserService(
 
   const token = generateToken(user.id);
 
-  return { token };
+  return {
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+    },
+    token,
+  };
 }
