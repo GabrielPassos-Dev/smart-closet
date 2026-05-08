@@ -1,7 +1,7 @@
-export default function SiteNext() {
+export default function Home() {
   return (
     <div className="h-screen flex items-center justify-center bg-red-500 text-white text-3xl">
-      Site
+      TESTE TAILWIND
     </div>
   );
 }
