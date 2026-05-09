@@ -14,7 +14,12 @@ export function Button({
   type = "button",
 }: ButtonProps) {
   return (
-    <button type={type} onClick={onClick} disabled={disabled}>
+    <button
+      className="bg-slate-900 hover:bg-black text-white rounded-full py-3 transition-all duration-300 shadow-lg shadow-slate-200"
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </button>
   );
