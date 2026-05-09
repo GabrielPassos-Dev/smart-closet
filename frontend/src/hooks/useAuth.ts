@@ -1,4 +1,4 @@
-import { loginRequest } from "@/service/auth.service";
+import { loginRequest, registerRequest } from "@/service/auth.service";
 import { useState } from "react";
 
 export function useAuth() {
@@ -21,5 +21,25 @@ export function useAuth() {
     }
   };
 
-  return { handleLogin, isLoading, error };
+  const handleRegister = async (
+    email: string,
+    password: string,
+    name: string,
+  ) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const data = await registerRequest(email, password, name);
+      return true;
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        return false;
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return { handleLogin, handleRegister, isLoading, error };
 }
