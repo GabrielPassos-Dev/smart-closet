@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { api } from "./api";
 
-type LoginResponse = {
+type AuthResponse = {
   id: string;
   name: string;
   email: string;
@@ -11,9 +11,31 @@ type LoginResponse = {
 export async function loginRequest(
   email: string,
   password: string,
-): Promise<LoginResponse> {
+): Promise<AuthResponse> {
   try {
     const response = await api.post("/login", {
+      email,
+      password,
+    });
+
+    return response.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      throw new Error(err.response?.data.message);
+    }
+
+    throw err;
+  }
+}
+
+export async function registerRequest(
+  email: string,
+  password: string,
+  name: string,
+): Promise<AuthResponse> {
+  try {
+    const response = await api.post("/register", {
+      name,
       email,
       password,
     });
