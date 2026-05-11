@@ -11,20 +11,22 @@ import CardForms from "@/components/forms/CardForm";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import { AuthFooter } from "@/components/forms/AuthFooter";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+
   const router = useRouter();
 
-  const { handleLogin, isLoading, error } = useAuth();
+  const { handleRegister, isLoading, error } = useAuth();
 
-  const goToRegister = () => {
-    router.push("/cadastro");
+  const goToLogin = () => {
+    router.push("/login");
   };
 
-  const handleForgotPassword = () => {
-    console.log("Teste");
-  };
+  function handleNameChange(e: ChangeEvent<HTMLInputElement>) {
+    setName(e.target.value);
+  }
 
   function handleEmailChange(e: ChangeEvent<HTMLInputElement>) {
     setEmail(e.target.value);
@@ -34,10 +36,10 @@ export default function LoginPage() {
     setPassword(e.target.value);
   }
 
-  async function handleLoginSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleRegisterSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const success = await handleLogin(email, password);
+    const success = await handleRegister(email, password, name);
 
     if (success) {
       router.replace("/home");
@@ -47,7 +49,16 @@ export default function LoginPage() {
   return (
     <main className="bg-[#F8F9FA] min-h-screen w-full flex items-center justify-center p-4 relative">
       <CardForms>
-        <AuthForm onSubmit={handleLoginSubmit}>
+        <AuthForm onSubmit={handleRegisterSubmit}>
+          <Input
+            label="nome"
+            id="name"
+            type="text"
+            placeholder="Nome Completo"
+            value={name}
+            onChange={handleNameChange}
+          />
+
           <Input
             label="email"
             id="email"
@@ -69,16 +80,14 @@ export default function LoginPage() {
           {error && <ErrorMessage message={error} />}
 
           <Button disabled={isLoading} type="submit">
-            {isLoading ? "Entrando..." : "Acessar Closet"}
+            {isLoading ? "Criando conta..." : "Criar Conta"}
           </Button>
 
           <AuthFooter
-            description="Não possui uma conta?"
-            actionText="Criar conta gratuita"
-            onAction={goToRegister}
-            onForgotPassword={handleForgotPassword}
-            forgotPasswordText="Esqueceu sua senha? Recuperar acesso"
-            isLogin={true}
+            description="Já tem cadastro?"
+            actionText="Acessar minha conta"
+            onAction={goToLogin}
+            isLogin={false}
           />
         </AuthForm>
       </CardForms>
