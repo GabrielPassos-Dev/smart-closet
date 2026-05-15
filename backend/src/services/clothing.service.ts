@@ -8,12 +8,13 @@ import {
 import prisma from "../libs/prisma.js";
 import { AppError } from "../errors/AppError.js";
 
-const clothingSelect = {
+const CreateClothingSelect = {
   id: true,
   name: true,
   type: true,
   imageUrl: true,
   createdAt: true,
+  color: true,
 };
 
 const listClothingSelect = {
@@ -41,7 +42,7 @@ const updateClothingSelect = {
 };
 
 type CreateClothingResponse = Prisma.ClothingItemGetPayload<{
-  select: typeof clothingSelect;
+  select: typeof CreateClothingSelect;
 }>;
 
 type ListClothingResponse = Prisma.ClothingItemGetPayload<{
@@ -92,7 +93,7 @@ export async function createClothingService(
       accessoryType,
       imageUrl,
     },
-    select: clothingSelect,
+    select: CreateClothingSelect,
   });
 
   return clothing;
