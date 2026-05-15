@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createContext,
   useContext,
@@ -19,11 +21,11 @@ type AuthContextData = {
   loading: boolean;
 };
 
-const AuthContext = createContext<AuthContextData | null>(null);
-
 type AuthProviderProps = {
   children: ReactNode;
 };
+
+const AuthContext = createContext<AuthContextData | null>(null);
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
@@ -33,7 +35,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     async function loadUser() {
       try {
         const data = await meRequest();
-
         setUser(data);
       } catch {
         setUser(null);
