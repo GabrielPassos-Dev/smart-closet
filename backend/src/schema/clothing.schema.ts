@@ -11,12 +11,25 @@ export const createClothingSchema = z
   .object({
     name: z.string().min(3, "O nome deve conter no mínimo 3 caracteres"),
     color: z.string().min(1, "Deve selecionar uma cor"),
-    type: z.nativeEnum(ClothingType),
-    accessoryType: z.nativeEnum(AccessoryType).optional(),
-    style: z.nativeEnum(Style),
-    warmth: z.nativeEnum(WarmthLevel),
-    gender: z.nativeEnum(Gender),
-    imageUrl: z.string().url().optional(),
+    type: z.nativeEnum(ClothingType, {
+      message: "Selecione um tipo válido",
+    }),
+    gender: z.nativeEnum(Gender, {
+      message: "Selecione um gênero válido",
+    }),
+    style: z.nativeEnum(Style, {
+      message: "Selecione um estilo válido",
+    }),
+    warmth: z.nativeEnum(WarmthLevel, {
+      message: "Selecione um nível de calor válido",
+    }),
+    accessoryType: z
+      .nativeEnum(AccessoryType, {
+        message: "Selecione um acessório válido",
+      })
+      .optional(),
+
+    imageUrl: z.string().url("A URL da imagem é inválida").optional(),
   })
   .refine(
     (data) => {
