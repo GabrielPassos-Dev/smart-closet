@@ -66,7 +66,7 @@ export default function LoginPage() {
             onChange={handlePasswordChange}
           />
 
-          {error && <ErrorMessage message={error} />}
+          {error && <ErrorMessage variant="Primary" message={error} />}
 
           <Button disabled={isLoading} type="submit">
             {isLoading ? "Entrando..." : "Acessar Closet"}

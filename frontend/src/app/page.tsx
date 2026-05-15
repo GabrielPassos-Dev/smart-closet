@@ -1,7 +1,21 @@
+"use client";
+
+import { useAuthContext } from "@/contexts/AuthContext";
+import { useRouter } from "next/navigation";
+
 export default function SiteNext() {
+  const { user } = useAuthContext();
+  const router = useRouter();
+
+  if (user) {
+    router.replace("/home");
+  } else {
+    router.replace("/login");
+  }
+
   return (
-    <div className="h-screen flex items-center justify-center bg-red-500 text-white text-3xl">
-      Site
+    <div>
+      <h1>Home</h1>
     </div>
   );
 }

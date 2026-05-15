@@ -77,7 +77,7 @@ export default function RegisterPage() {
             onChange={handlePasswordChange}
           />
 
-          {error && <ErrorMessage message={error} />}
+          {error && <ErrorMessage variant="Primary" message={error} />}
 
           <Button disabled={isLoading} type="submit">
             {isLoading ? "Criando conta..." : "Criar Conta"}
